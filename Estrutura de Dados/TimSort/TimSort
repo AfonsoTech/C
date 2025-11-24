@@ -1,0 +1,70 @@
+TimSort
+
+    O TimSort nasceu em 2002 por Tim Peters, que por tal motivo recebeu o nome de Tim.
+
+    Esta forma de ordenação vem de outras duas muito famosas:
+
+  mergeSort
+
+  insertSort
+
+minRun
+
+O ponto de partidade da ordenação é o calculo da minRun, que pega como base N(tamanho do vetor) e segue alguns principios:
+
+    O valor de minrun não deve ser tão grande → minrun < 256;
+    O valor de minrun não deve ser tão pequeno → minrun > 8;
+    Seria bom se N / minrun fosse uma potência de 2 (ou perto disso).
+    Após testes diários, verificou-se que varios casos utilizando a diferença entre 32 e 64 (ou seja, igual a 32)
+    O(N log(N))
+
+	// Função que calcula o "Min Run" para o algoritmo Timsort
+int calculateMinRun(int length) {
+    // A variável 'r' é usada para armazenar o bit de menor ordem (LSB)
+    int r = 0;
+    
+    // Continua enquanto o comprimento (length) for maior ou igual a 32.
+    while (length >= 32) {
+        // 'r |= (length & 1);' 
+        // Realiza um "OR" bit a bit na variável 'r' com o LSB de 'length'.
+        // Isso acumula o bit 1 se for encontrado em qualquer iteração, 
+        // garantindo que 'r' se torne 1 se 'length' for ímpar em algum momento
+        // antes de ser reduzido a menos de 32.
+        r |= (length & 1);
+        
+        // 'length >>= 1;'
+        // Desloca os bits de 'length' uma posição para a direita (o mesmo que dividir por 2)
+        length >>= 1;
+    }
+    
+    // O resultado é o 'length' reduzido (o 5 ou 6 bits mais significativos)
+    // mais o bit 'r' (que será 0 ou 1).
+    return length + r;
+}
+
+// Exemplo de uso (Função principal)
+int main() {
+    int len1 = 60; // Exemplo em que r será 0
+    int len2 = 67; // Exemplo em que r será 1 (67 -> 33 -> 16. O LSB de 33 é 1, então r=1)
+
+    printf("MinRun para length = %d: %d\n", len1, calculateMinRun(len1));
+    printf("MinRun para length = %d: %d\n", len2, calculateMinRun(len2));
+
+    return 0;
+}
+
+InserSort
+
+Após a minRun definida, o vetor mãe passa a ser separado e varios outros com o tamanho do calculo e os mesmos são organizados utilizando InsertSort.
+MergeSort
+
+E por ultimo os subvetores (ou minRuns) passar a ser unido utilizando a ordenação MergeSort.
+Utilizado em:
+Hoje em dia o TimSort é o principal metodo de ordenação utilizado em Python (utilizado em sorted() e list.sort()) e em Arrays.sort() do Java(font freeCode camp) por ser extremamente eficaz e rapido.
+
+Referencias
+
+    skerritt
+    ronanlopes
+    geeksforgeeks
+    video de simulação

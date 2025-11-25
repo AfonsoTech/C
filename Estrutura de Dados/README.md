@@ -1,1 +1,1 @@
-# Lineares e não lineares
+# Estruturas lineares
